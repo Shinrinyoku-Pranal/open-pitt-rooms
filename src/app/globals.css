@@ -1,26 +1,395 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-gold: var(--gold);
+  --color-free: var(--free);
+  --color-free-soft: var(--free-soft);
+  --color-busy: var(--busy);
+  --color-busy-soft: var(--busy-soft);
+  --color-closed: var(--closed);
+  --color-closed-soft: var(--closed-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
 }
 
+:root {
+  --bg: #edf1f8;
+  --panel: #ffffff;
+  --surface: #f1f4fa;
+  --surface-2: #e2e8f4;
+  --fg: #0a1a3a;
+  --muted: #4a5a7c;
+  --faint: #8796b3;
+  --line: rgb(0 53 148 / 0.1);
+  --line-strong: rgb(0 53 148 / 0.18);
+  --primary: #003594;
+  --primary-fg: #ffffff;
+  --accent: #ffb81c;
+  --accent-fg: #0a1a3a;
+  --accent-soft: rgb(255 184 28 / 0.18);
+  --gold: #e5a000;
+  --free: #15803d;
+  --free-ink: #ffffff;
+  --free-soft: rgb(21 128 61 / 0.1);
+  --busy: #dc2626;
+  --busy-soft: rgb(220 38 38 / 0.09);
+  --closed: #8796b3;
+  --closed-soft: rgb(135 150 179 / 0.16);
+  --warn: #a16207;
+  --warn-soft: rgb(202 138 4 / 0.13);
+  --shadow: 0 1px 2px rgb(10 26 58 / 0.05), 0 10px 30px rgb(10 26 58 / 0.1);
+  color-scheme: light;
+}
+
+/* Dark tokens: used when the system is dark (unless the person picked light), or when
+   they picked dark. Keep the two blocks identical. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --bg: #050505;
+    --panel: #0d0d0e;
+    --surface: #161618;
+    --surface-2: #212124;
+    --fg: #f2f2f3;
+    --muted: #a1a1aa;
+    --faint: #66666f;
+    --line: rgb(255 255 255 / 0.08);
+    --line-strong: rgb(255 255 255 / 0.14);
+    --primary: #ffb81c;
+    --primary-fg: #000000;
+    --accent: #ffb81c;
+    --accent-fg: #000000;
+    --accent-soft: rgb(255 184 28 / 0.14);
+    --gold: #ffb81c;
+    --free: #4ade80;
+    --free-ink: #03200f;
+    --free-soft: rgb(74 222 128 / 0.12);
+    --busy: #f87171;
+    --busy-soft: rgb(248 113 113 / 0.12);
+    --closed: #71717a;
+    --closed-soft: rgb(113 113 122 / 0.18);
+    --warn: #facc15;
+    --warn-soft: rgb(250 204 21 / 0.12);
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 14px 44px rgb(0 0 0 / 0.6);
+    --attrib-filter: invert(1);
+    color-scheme: dark;
   }
 }
 
+:root[data-theme="dark"] {
+  --bg: #050505;
+  --panel: #0d0d0e;
+  --surface: #161618;
+  --surface-2: #212124;
+  --fg: #f2f2f3;
+  --muted: #a1a1aa;
+  --faint: #66666f;
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.14);
+  --primary: #ffb81c;
+  --primary-fg: #000000;
+  --accent: #ffb81c;
+  --accent-fg: #000000;
+  --accent-soft: rgb(255 184 28 / 0.14);
+  --gold: #ffb81c;
+  --free: #4ade80;
+  --free-ink: #03200f;
+  --free-soft: rgb(74 222 128 / 0.12);
+  --busy: #f87171;
+  --busy-soft: rgb(248 113 113 / 0.12);
+  --closed: #71717a;
+  --closed-soft: rgb(113 113 122 / 0.18);
+  --warn: #facc15;
+  --warn-soft: rgb(250 204 21 / 0.12);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 14px 44px rgb(0 0 0 / 0.6);
+  --attrib-filter: invert(1);
+  color-scheme: dark;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+}
+
+:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+/* Frosted panels floating over the map. */
+.glass {
+  background: color-mix(in oklab, var(--panel) 78%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-2) transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes opr-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: opr-rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes opr-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* --- Time slider ------------------------------------------------------------ */
+.opr-range {
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+.opr-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--fg) var(--fill, 0%), var(--surface-2) var(--fill, 0%));
+}
+.opr-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+.opr-range::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--fg);
+}
+.opr-range::-webkit-slider-thumb {
+  appearance: none;
+  margin-top: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 2px solid var(--fg);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
+}
+.opr-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 2px solid var(--fg);
+}
+
+/* --- Map -------------------------------------------------------------------- */
+.opr-map {
+  container-type: size;
+}
+
+/* When the phone sheet is pulled up, the map strip is too short for its controls. */
+@container (max-height: 280px) {
+  .opr-map-controls {
+    display: none;
+  }
+}
+
+.opr-map .maplibregl-canvas:focus {
+  outline: none;
+}
+
+.opr-map .maplibregl-ctrl.maplibregl-ctrl-attrib,
+.opr-map .maplibregl-ctrl.maplibregl-ctrl-attrib.maplibregl-compact {
+  background: color-mix(in oklab, var(--panel) 70%, transparent);
+  color: var(--faint);
+  font: 10px/1.4 var(--font-sans);
+}
+.opr-map .maplibregl-ctrl-attrib a {
+  color: var(--muted);
+}
+.opr-map .maplibregl-ctrl-attrib-button {
+  filter: var(--attrib-filter, none);
+}
+
+.opr-map-vignette {
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, color-mix(in oklab, var(--bg) 60%, transparent) 100%);
+}
+
+.opr-pin-anchor {
+  width: 0;
+  height: 0;
+  cursor: pointer;
+}
+.opr-pin-anchor:focus-visible {
+  outline: none;
+}
+.opr-pin-anchor:focus-visible .opr-pin {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+}
+
+.opr-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.2s;
+  cursor: pointer;
+}
+
+.opr-pin.is-open {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--free);
+  color: var(--free-ink);
+  font: 650 12.5px/1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  box-shadow:
+    0 0 0 4px color-mix(in oklab, var(--free) 20%, transparent),
+    0 0 24px color-mix(in oklab, var(--free) 55%, transparent);
+}
+
+.opr-pin.is-empty {
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background: var(--closed);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--bg) 75%, transparent);
+}
+
+.opr-pin:hover,
+.opr-pin.is-highlighted {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.opr-pin.is-selected {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--fg),
+    0 0 28px color-mix(in oklab, var(--free) 60%, transparent);
+}
+.opr-pin.is-empty.is-selected {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--fg);
+}
+
+.opr-pin.is-dimmed {
+  opacity: 0.35;
+}
+
+.opr-pin.is-open.is-highlighted::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--free);
+  animation: opr-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  z-index: -1;
+}
+
+.opr-pin-label {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translate(-4px, -50%);
+  white-space: nowrap;
+  font: 600 12px/1 var(--font-sans);
+  font-style: normal;
+  color: var(--fg);
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--panel) 85%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+.opr-pin-label span {
+  margin-left: 6px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.opr-pin:hover .opr-pin-label,
+.opr-pin.is-highlighted .opr-pin-label,
+.opr-pin.is-selected .opr-pin-label {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.opr-user {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #3b82f6;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 6px rgb(59 130 246 / 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

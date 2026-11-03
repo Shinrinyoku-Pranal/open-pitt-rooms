@@ -1,0 +1,36 @@
+name: Sync 25Live data
+
+# Calls the deployed app's sync endpoint every 30 minutes from 6 AM to ~midnight
+# Eastern (cron is UTC). The endpoint decides between a quick (today + tomorrow)
+# and a full 7-day refresh.
+#
+# Setup: repo Settings → Secrets and variables → Actions
+#   secret   CRON_SECRET  same value as the app's CRON_SECRET env var
+#   variable SITE_URL     e.g. https://openpittrooms.com
+on:
+  schedule:
+    - cron: "*/30 0-4,10-23 * * *"
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "Force a full 7-day refresh"
+        type: boolean
+        default: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger sync
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: ${{ vars.SITE_URL }}
+          FULL: ${{ inputs.full && '1' || '0' }}
+        run: |
+          if [ -z "$CRON_SECRET" ] || [ -z "$SITE_URL" ]; then
+            echo "::error::Set the CRON_SECRET secret and SITE_URL variable for this repo"; exit 1
+          fi
+          curl --fail-with-body --silent --show-error --max-time 180 --retry 2 --retry-delay 30 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$SITE_URL/api/cron/sync?full=$FULL"

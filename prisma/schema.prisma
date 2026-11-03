@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  // Only `prisma migrate dev` uses this; leave it unset in production.
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Building {
+  id        String   @id // 25Live room-code prefix, e.g. "WWPH"
+  name      String
+  shortName String
+  lat       Float
+  lng       Float
+  rooms     Room[]
+  updatedAt DateTime @updatedAt
+}
+
+model Room {
+  id          String   @id // 25Live space id
+  code        String // e.g. "WWPH1500"
+  formalName  String // e.g. "WESLEY W. POSVAR HALL 1500"
+  displayName String // e.g. "Posvar 1500" or "Polish Nationality Room"
+  roomNumber  String
+  capacity    Int?
+  kind        RoomKind
+  features    String[] // normalized feature slugs, see src/lib/rooms.ts
+  buildingId  String
+  building    Building @relation(fields: [buildingId], references: [id])
+  // false once a room drops off Pitt's "Student Study Spaces" list; kept so links don't 404.
+  active      Boolean  @default(true)
+  blocks      Block[]
+  updatedAt   DateTime @updatedAt
+
+  @@index([buildingId])
+  @@index([active])
+}
+
+enum RoomKind {
+  REGISTRAR
+  DEPARTMENTAL
+  NATIONALITY
+}
+
+// A span of time a room is unavailable on a given Pitt-local date.
+model Block {
+  id       BigInt    @id @default(autoincrement())
+  roomId   String
+  room     Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  date     String // "YYYY-MM-DD", America/New_York
+  startMin Int // minutes since local midnight
+  endMin   Int
+  kind     BlockKind
+  title    String?
+
+  @@index([date, roomId])
+}
+
+enum BlockKind {
+  EVENT
+  CLOSED
+}
+
+model SyncRun {
+  id         String    @id @default(cuid())
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  ok         Boolean   @default(false)
+  roomCount  Int?
+  blockCount Int?
+  dates      String[]
+  error      String?
+  warnings   String[]
+
+  @@index([ok, finishedAt])
+}

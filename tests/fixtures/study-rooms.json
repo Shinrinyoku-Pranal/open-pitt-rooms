@@ -1,0 +1,274 @@
+{
+ "page": 1,
+ "rows": [
+  {
+   "contextId": 1094,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 1094,
+     "itemName": "BENDM0G24",
+     "itemTypeId": 4
+    },
+    "BENEDUM HALL G24",
+    "Departmental Priority Room (Privilege)",
+    "ADA Accessible  - Student, ADA Accessible - Elevator Stop, ADA Accessible - Instructor, ADA Accessible - Public Corridor, Air Conditioning, Board - Dry Erase White Board, Board - Dry Erase White Board 50-99 Sq Ft, Instructor - Chair, Instructor Station, Media - Data Projector/Monitor, Media - Document Camera, Media - Instructor Computer, Seating - Tables and Chairs",
+    "Classroom, Media, Teaching Facility",
+    36,
+    36,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ],
+   "pages": 1,
+   "count": 8
+  },
+  {
+   "contextId": 647,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 647,
+     "itemName": "CL00G8",
+     "itemTypeId": 4
+    },
+    "CATHEDRAL OF LEARNING G8",
+    "Registrar Room",
+    "ADA Accessible - Elevator Stop, ADA Accessible - Public Corridor, Board - Dry Erase White Board, Board - Dry Erase White greater or equal 100 Sq Ft, Data Port, Floor - Cement, Floor - Tiered, Instructor - Chair, Instructor - Table, Instructor Station, Lighting - Darkened, Media - CD, Media - Data Projector/Monitor, Media - DVD/Blu-ray, Media - Instructor Computer, Projection Screen, Seating - Moveable, Seating - Tables and Chairs, Seating - Theater, Windows - Yes",
+    "Auditorium, Media, Teaching Facility",
+    76,
+    76,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ]
+  },
+  {
+   "contextId": 653,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 653,
+     "itemName": "CL0126",
+     "itemTypeId": 4
+    },
+    "CATHEDRAL OF LEARNING 126--Polish Nationality Room",
+    "Nationality Room, Registrar Room",
+    "ADA Accessible  - Student, ADA Accessible - Elevator Stop, ADA Accessible - Instructor, ADA Accessible - Public Corridor, Board - Chalk less than 50 Sq Ft, Media - Data Projector/Monitor, Seating - Tables and Chairs, Television, Windows - Yes",
+    "Classroom, Media, Teaching Facility",
+    11,
+    11,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ]
+  },
+  {
+   "contextId": 783,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 783,
+     "itemName": "CLAPP00L9",
+     "itemTypeId": 4
+    },
+    "CLAPP HALL L9",
+    "Registrar Room",
+    "ADA Accessible  - Student, ADA Accessible - Instructor, ADA Accessible - Public Corridor, Air Conditioning, Board - Chalk 50-99 Sq Ft, Data Port, Floor - Carpeted, Floor - Tiered, Instructor - Chair, Instructor Station, Lighting - Darkened, Lighting - Dimmers, Media - CD, Media - Data Projector/Monitor, Media - Document Camera, Media - DVD/Blu-ray, Projection Screen, Seating - Permanent, Seating - Theater, Windows - No",
+    "Auditorium, Classroom, Media, Teaching Facility",
+    373,
+    373,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ]
+  },
+  {
+   "contextId": 803,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 803,
+     "itemName": "LANGYA202",
+     "itemTypeId": 4
+    },
+    "LANGLEY HALL A202",
+    "Registrar Room",
+    "ADA Accessible  - Student, ADA Accessible - Elevator Stop, ADA Accessible - Public Corridor, Air Conditioning, Board - Dry Erase White Board, Board - Dry Erase White greater or equal 100 Sq Ft, Data Port, Floor - Carpeted, Instructor - Chair, Instructor - Table, Instructor Station, Lighting - Darkened, Media - CD, Media - Data Projector/Monitor, Media - Document Camera, Media - DVD/Blu-ray, Projection Screen, Seating - Moveable, Seating - Tablet Arm Desks, Windows - Yes",
+    "Classroom, Media",
+    25,
+    25,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ]
+  },
+  {
+   "contextId": 884,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 884,
+     "itemName": "SENSQ2500",
+     "itemTypeId": 4
+    },
+    "SENNOTT SQUARE 2500",
+    "Departmental Room (Non-Privilege)",
+    "ADA Accessible - Instructor, Air Conditioning, Board - Chalk 50-99 Sq Ft, Board - Chalk less than 50 Sq Ft, Data Port, Instructor - Chair, Instructor - Lectern / Podium, Instructor Station, Lighting - Darkened, Media - CD, Media - Data Projector/Monitor, Media - DVD/Blu-ray, Media - Instructor Computer, Projection Screen, Seating - Tables and Chairs, Windows - No",
+    "Classroom, Teaching Facility",
+    42,
+    42,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ]
+  },
+  {
+   "contextId": 865,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 865,
+     "itemName": "THAW0011",
+     "itemTypeId": 4
+    },
+    "THAW HALL 11",
+    "Departmental Priority Room (Privilege)",
+    "Air Conditioning, Board - Chalk 100 Sq Ft or greater, Data Port, Floor - Tiered, Floor - Tiled, Instructor - Chair, Instructor - Table, Lighting - Darkened, Media - CD, Media - Data Projector/Monitor, Media - DVD/Blu-ray, Projection Screen, Seating - Permanent, Seating - Tablet Arm Desks, Seating - Theater, Windows - No",
+    "Auditorium, Media, Teaching Facility",
+    116,
+    116,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ]
+  },
+  {
+   "contextId": 750,
+   "row": [
+    {
+     "templateType": 5,
+     "itemId": 750,
+     "itemName": "WWPH5403",
+     "itemTypeId": 4
+    },
+    "WESLEY W. POSVAR HALL 5403",
+    "Departmental Priority Room (Privilege)",
+    "ADA Accessible  - Student, ADA Accessible - Elevator Stop, ADA Accessible - Instructor, ADA Accessible - Public Corridor, Air Conditioning, Board - Chalk less than 50 Sq Ft, Floor - Carpeted, Lighting - Darkened, Seating - Moveable, Seating - Tables and Chairs, Windows - No",
+    "Classroom, Teaching Facility",
+    8,
+    8,
+    {
+     "templateType": 41,
+     "itemId": "",
+     "itemName": "",
+     "itemTypeId": 41
+    }
+   ]
+  }
+ ],
+ "cols": [
+  {
+   "isPermanent": 1,
+   "isDateTime": 0,
+   "name": "Name",
+   "isDate": 0,
+   "prefname": "name",
+   "isVisible": 1,
+   "sortable": 1,
+   "isTime": 0,
+   "order": "asc"
+  },
+  {
+   "isPermanent": 0,
+   "isDateTime": 0,
+   "name": "Formal Name",
+   "isDate": 0,
+   "prefname": "formal_name",
+   "isVisible": 1,
+   "sortable": 1,
+   "isTime": 0
+  },
+  {
+   "isPermanent": 0,
+   "isDateTime": 0,
+   "name": "Categories",
+   "isDate": 0,
+   "prefname": "categories",
+   "isVisible": 1,
+   "sortable": 0,
+   "isTime": 0
+  },
+  {
+   "isPermanent": 0,
+   "isDateTime": 0,
+   "name": "Features",
+   "isDate": 0,
+   "prefname": "features",
+   "isVisible": 1,
+   "sortable": 0,
+   "isTime": 0
+  },
+  {
+   "isPermanent": 0,
+   "isDateTime": 0,
+   "name": "Layouts",
+   "isDate": 0,
+   "prefname": "layouts",
+   "isVisible": 1,
+   "sortable": 0,
+   "isTime": 0
+  },
+  {
+   "isPermanent": 0,
+   "isDateTime": 0,
+   "name": "Max Capacity",
+   "isDate": 0,
+   "prefname": "max_capacity",
+   "isVisible": 1,
+   "sortable": 1,
+   "isTime": 0
+  },
+  {
+   "isPermanent": 0,
+   "isDateTime": 0,
+   "name": "Default Capacity",
+   "isDate": 0,
+   "prefname": "default_capacity",
+   "isVisible": 1,
+   "sortable": 0,
+   "isTime": 0
+  },
+  {
+   "isPermanent": 0,
+   "isDateTime": 0,
+   "name": "Building",
+   "isDate": 0,
+   "prefname": "bldg_name",
+   "isVisible": 1,
+   "sortable": 1,
+   "isTime": 0
+  }
+ ]
+}
