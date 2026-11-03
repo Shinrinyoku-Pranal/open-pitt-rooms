@@ -119,14 +119,3 @@ push a commit or re-enable it from the Actions tab before each semester.
 | Wrong hours for a room | Hours come from 25Live's "Closed" blocks; anything before 6 AM is treated as closed |
 
 Every sync is recorded in the `SyncRun` table with counts, warnings, and errors.
-
-## Data use and caveats
-
-Caching Pitt's public study-space availability was approved by the Office of the
-University Registrar (rooms@registrar.pitt.edu). If you fork this for another
-use, ask them first.
-
-"Open" means 25Live shows nothing scheduled — not that a room is unlocked or
-empty. Departmental rooms may be locked or prioritized for their department.
-This is an independent student project, not affiliated with the University of
-Pittsburgh.
