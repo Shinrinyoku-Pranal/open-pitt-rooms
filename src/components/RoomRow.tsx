@@ -80,7 +80,17 @@ export default function RoomRow({
       >
         <span className={`size-2 shrink-0 rounded-full ${TONE_DOT[tone]}`} aria-hidden="true" />
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-[14px] font-medium leading-snug">{room.displayName}</span>
+          <span className="flex min-w-0 items-center gap-1.5">
+            <span className="truncate text-[14px] font-medium leading-snug">{room.displayName}</span>
+            {room.kind === "DEPARTMENTAL" && (
+              <span
+                className="shrink-0 rounded bg-warn-soft px-1 py-px text-[10px] font-bold uppercase tracking-wide text-warn"
+                title="Departmental room: may be locked or reserved for the department"
+              >
+                Dept
+              </span>
+            )}
+          </span>
           <span className="block truncate text-[12.5px] leading-snug text-muted">{meta.join(" · ")}</span>
         </span>
         <span className="shrink-0 text-right">

@@ -33,6 +33,7 @@ import {
   useUserLocation,
 } from "./hooks";
 import FilterPanel from "./FilterPanel";
+import BuildingCard from "./BuildingCard";
 import RoomDetail from "./RoomDetail";
 import RoomRow from "./RoomRow";
 import { Badge, NavRow, SectionLabel, Switch } from "./Sidebar";
@@ -268,7 +269,10 @@ export default function Finder({ initialData }: { initialData: DayData | null })
       ? (BUILDINGS.find((b) => b.id === state.buildings[0]) ?? null)
       : null;
   // Centre focused buildings in the part of the map the overlays leave visible.
-  const rightCover = selected ? DETAIL_W + GUTTER * 2 : 0;
+  // One building picked (its map circle or the dropdown) and no room open: show its card.
+  const focusedBuilding = !selected && state.buildings.length === 1 ? data?.buildings.find((b) => b.id === state.buildings[0]) : undefined;
+  const hasCard = Boolean(selected || focusedBuilding);
+  const rightCover = hasCard ? DETAIL_W + GUTTER * 2 : 0;
   const focusOffset: [number, number] = isDesktop ? [rightCover / 2, SCRUBBER_H / 2] : [0, 0];
   const inClassPct = stats && stats.total ? Math.round((stats.inClass / stats.total) * 100) : 0;
 
@@ -302,6 +306,25 @@ export default function Finder({ initialData }: { initialData: DayData | null })
       shareUrl={shareUrlFor(selected.room.id)}
     />
   );
+
+  const buildingCard = focusedBuilding && result && (
+    <BuildingCard
+      key={focusedBuilding.id}
+      building={focusedBuilding}
+      total={mapBuildings.find((b) => b.id === focusedBuilding.id)?.total ?? 0}
+      open={result.available}
+      later={result.unavailable.filter((r) => r.status.status !== "free")}
+      whenPhrase={whenPhrase}
+      selectedId={state.room}
+      favorites={favorites}
+      onSelectRoom={selectRoom}
+      onFavorite={toggleFavorite}
+      onClose={() => update({ buildings: [] })}
+    />
+  );
+  // The card over the map: a room's details, or a building's rooms.
+  const card = detail || buildingCard;
+  const closeCard = () => (selected ? update({ room: null }) : update({ buildings: [] }));
 
   const scrubber = clientToday && day && (
     <TimeScrubber
@@ -360,7 +383,7 @@ export default function Finder({ initialData }: { initialData: DayData | null })
           notice={locationNotice !== dismissedNotice ? locationNotice : null}
           onDismissNotice={() => setDismissedNotice(locationNotice)}
           controlsBottom={isDesktop ? SCRUBBER_H + GUTTER * 2 : 32}
-          controlsRight={isDesktop && selected ? DETAIL_W + GUTTER * 2 : GUTTER}
+          controlsRight={isDesktop && hasCard ? DETAIL_W + GUTTER * 2 : GUTTER}
         />
         <div className="glass pointer-events-none absolute left-3 top-[max(0.75rem,env(safe-area-inset-top))] z-10 flex items-center gap-2 rounded-full py-1.5 pl-3 pr-3.5 text-[13px] lg:hidden">
           <span className={`size-2 rounded-full ${isLive ? "animate-pulse bg-free" : "bg-accent"}`} />
@@ -691,21 +714,21 @@ export default function Finder({ initialData }: { initialData: DayData | null })
         {scrubber}
       </div>
 
-      {/* Selected room: a card over the map on desktop, a sheet on phones */}
-      {selected && isDesktop && (
+      {/* The selected room or building: a card over the map on desktop, a sheet on phones */}
+      {card && isDesktop && (
         <div
           className="glass scroll-thin absolute right-3 top-12 z-20 overflow-y-auto rounded-[22px] p-5"
           style={{ width: DETAIL_W, bottom: SCRUBBER_H + GUTTER * 2 }}
         >
-          {detail}
+          {card}
         </div>
       )}
-      {selected && !isDesktop && (
+      {card && !isDesktop && (
         <>
-          <div className="fixed inset-0 z-[1500] bg-black/50 backdrop-blur-sm" onClick={() => update({ room: null })} aria-hidden="true" />
+          <div className="fixed inset-0 z-[1500] bg-black/50 backdrop-blur-sm" onClick={closeCard} aria-hidden="true" />
           <div className="scroll-thin fixed inset-x-0 bottom-0 z-[1501] max-h-[86dvh] overflow-y-auto rounded-t-3xl border-t border-line-strong bg-panel p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
             <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line-strong" />
-            {detail}
+            {card}
           </div>
         </>
       )}

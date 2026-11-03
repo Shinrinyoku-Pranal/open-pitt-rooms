@@ -12,10 +12,25 @@ import RoomWeek from "./RoomWeek";
 import { TONE_TEXT } from "./RoomRow";
 import { CalendarIcon, ExternalIcon, ShareIcon, StarIcon, WalkIcon, XIcon } from "./icons";
 
-const KIND_NOTE: Record<RoomDTO["kind"], string | null> = {
-  REGISTRAR: null,
-  NATIONALITY: "Nationality Room. Please treat the space and its furnishings with care.",
-  DEPARTMENTAL: "Departmental room. It may be locked or reserved for the department.",
+// What kind of room this is, shown right under its name. Departmental rooms get the
+// loudest treatment: they're on Pitt's study-space list but can be locked or held for
+// the department's own students.
+const KIND: Record<RoomDTO["kind"], { label: string; note: string; tone: string }> = {
+  DEPARTMENTAL: {
+    label: "Departmental room",
+    note: "It may be locked or reserved for the department's own students.",
+    tone: "border-warn/40 bg-warn-soft text-warn",
+  },
+  NATIONALITY: {
+    label: "Nationality Room",
+    note: "Open for study. Please treat the space and its furnishings with care.",
+    tone: "border-accent/40 bg-accent-soft text-fg",
+  },
+  REGISTRAR: {
+    label: "General classroom",
+    note: "Open for study whenever no class is scheduled.",
+    tone: "border-free/30 bg-free-soft text-free",
+  },
 };
 
 export default function RoomDetail({
@@ -107,7 +122,12 @@ export default function RoomDetail({
         </button>
       </header>
 
-      <div className="mt-4 rounded-xl border border-line bg-surface/60 p-3.5">
+      <p className={`mt-3 rounded-xl border px-3 py-2.5 text-[13px] leading-snug ${KIND[room.kind].tone}`}>
+        <strong className="font-bold">{KIND[room.kind].label}.</strong>{" "}
+        <span className="opacity-90">{KIND[room.kind].note}</span>
+      </p>
+
+      <div className="mt-3 rounded-xl border border-line bg-surface/60 p-3.5">
         <p className={`text-[15px] font-semibold ${TONE_TEXT[tone]}`}>{statusHeadline(status)}</p>
         {detail && <p className="mt-0.5 text-[13px] text-muted">{detail}</p>}
         <div className="mt-3.5">
@@ -167,7 +187,6 @@ export default function RoomDetail({
         </ul>
       )}
 
-      {KIND_NOTE[room.kind] && <p className="mt-3 text-[12.5px] leading-relaxed text-muted">{KIND_NOTE[room.kind]}</p>}
       <p className="mt-3 text-[11.5px] leading-relaxed text-faint">{room.formalName}</p>
     </article>
   );
