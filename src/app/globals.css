@@ -142,6 +142,13 @@ body {
   background: var(--accent-soft);
 }
 
+/* Windows and Linux browsers paint the select popup from page styles (macOS uses a native
+   menu), and our transparent selects would otherwise show themed text on a white list. */
+option {
+  background-color: var(--panel);
+  color: var(--fg);
+}
+
 /* Frosted panels floating over the map. */
 .glass {
   background: color-mix(in oklab, var(--panel) 78%, transparent);
