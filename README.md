@@ -39,7 +39,7 @@ The map uses [MapLibre GL](https://maplibre.org) with free vector tiles from
 ## How it works
 
 ```
-GitHub Actions (every 30 min)          Vercel
+Vercel Cron hourly + GitHub backup     Vercel
         │                     ┌───────────────────────────────┐
         └─► /api/cron/sync ───┤ src/lib/sync.ts               │
                               │   1 request: study-room list   │──► 25Live public JSON
@@ -93,11 +93,15 @@ Checks: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
    `NEXT_PUBLIC_SITE_URL` (your final URL). Deploy — the build runs migrations.
 3. **First data load** —
    `curl -H "Authorization: Bearer $CRON_SECRET" "$SITE_URL/api/cron/sync?full=1"`
-4. **Scheduled sync** — in the GitHub repo: Settings → Secrets and variables →
-   Actions. Add secret `CRON_SECRET` and variable `SITE_URL`. The
-   `Sync 25Live data` workflow then runs every 30 minutes (6 AM–midnight ET);
-   run it once by hand from the Actions tab to confirm. `vercel.json` also
-   schedules a daily full refresh as a backup.
+4. **Scheduled sync** — `vercel.json` runs the sync about once an hour, plus a
+   full refresh each morning; Vercel sends `CRON_SECRET` for you. On the Hobby
+   plan each run lands at some minute within its hour. For a second, independent
+   trigger, in the GitHub repo: Settings → Secrets and variables → Actions. Add
+   secret `CRON_SECRET` and variable `SITE_URL`, set to the address the site
+   finally loads at (`https://www.example.com` if the bare domain redirects to
+   `www`). The `Sync 25Live data` workflow is scheduled hourly, but GitHub often
+   delays or skips scheduled runs; run it once by hand from the Actions tab to
+   confirm.
 5. **Analytics** — Vercel dashboard → your project → Analytics → Enable. It's
    cookieless and counts unique visitors, so weekly active users are there from
    day one.
@@ -113,7 +117,8 @@ push a commit or re-enable it from the Actions tab before each semester.
 
 | Symptom | Where to look |
 | --- | --- |
-| Stale-data banner on the site | Actions → Sync 25Live data logs; `/api/health` |
+| Stale-data banner on the site | Vercel → Cron Jobs logs; Actions → Sync 25Live data logs; `/api/health` |
+| Sync workflow fails with "SITE_URL redirects" | Set the repo's `SITE_URL` variable to the final address (with `www` if the bare domain redirects) |
 | Sync warning "No building configured for room …" | Pitt added a building to the study list — add it to `src/lib/buildings.ts` (code prefix + coordinates) |
 | Sync error "Unexpected … shape" or "paginated" | 25Live changed its response format; existing data is kept until fixed |
 | Wrong hours for a room | Hours come from 25Live's "Closed" blocks; anything before 6 AM is treated as closed |

@@ -1,15 +1,18 @@
 name: Sync 25Live data
 
-# Calls the deployed app's sync endpoint every 30 minutes from 6 AM to ~midnight
-# Eastern (cron is UTC). The endpoint decides between a quick (today + tomorrow)
-# and a full 7-day refresh.
+# A second, independent trigger for the app's sync endpoint; vercel.json holds the
+# main hourly schedule. GitHub delays or drops scheduled runs under load, worst at the
+# top of the hour, so this runs off the hour (roughly 6 AM to midnight Eastern; cron
+# is UTC) and is a backup rather than the clock. The endpoint decides between a quick
+# (today + tomorrow) and a full 7-day refresh.
 #
 # Setup: repo Settings → Secrets and variables → Actions
 #   secret   CRON_SECRET  same value as the app's CRON_SECRET env var
-#   variable SITE_URL     e.g. https://openpittrooms.com
+#   variable SITE_URL     the site's final address, e.g. https://www.example.com.
+#                         It must not redirect: a redirected request never syncs.
 on:
   schedule:
-    - cron: "*/30 0-4,10-23 * * *"
+    - cron: "43 0-4,10-23 * * *"
   workflow_dispatch:
     inputs:
       full:
@@ -31,6 +34,19 @@ jobs:
           if [ -z "$CRON_SECRET" ] || [ -z "$SITE_URL" ]; then
             echo "::error::Set the CRON_SECRET secret and SITE_URL variable for this repo"; exit 1
           fi
-          curl --fail-with-body --silent --show-error --max-time 180 --retry 2 --retry-delay 30 \
+          body=$(mktemp)
+          # Redirects are not followed: curl drops the Authorization header when the
+          # host changes, so a redirected request could never run the sync.
+          result=$(curl --silent --show-error --max-time 180 --retry 2 --retry-delay 30 \
+            --output "$body" --write-out '%{http_code} %{redirect_url}' \
             -H "Authorization: Bearer $CRON_SECRET" \
-            "$SITE_URL/api/cron/sync?full=$FULL"
+            "${SITE_URL%/}/api/cron/sync?full=$FULL") || { echo "::error::Could not reach $SITE_URL"; exit 1; }
+          code=${result%% *}
+          cat "$body"; echo
+          case "$code" in
+            200) ;;
+            3*) echo "::error::SITE_URL redirects to ${result#* }. Set the SITE_URL variable to the final address."; exit 1 ;;
+            401) echo "::error::The site rejected CRON_SECRET. It must match the app's CRON_SECRET."; exit 1 ;;
+            *) echo "::error::Sync endpoint returned HTTP $code"; exit 1 ;;
+          esac
+          jq -e '.ok == true' "$body" > /dev/null || { echo "::error::Sync endpoint did not report a successful sync"; exit 1; }

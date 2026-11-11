@@ -28,8 +28,8 @@ export default function About() {
           <h2>Where the data comes from</h2>
           <p>
             Pitt&apos;s public 25Live schedule, using the registrar&apos;s own &ldquo;Student Study Spaces&rdquo; list (
-            {BUILDINGS.length} buildings). We refresh a cached copy every 30 minutes rather than hitting 25Live for every
-            visitor, with permission from the Office of the University Registrar. Room hours come from 25Live too.
+            {BUILDINGS.length} buildings). We refresh a cached copy about once an hour rather than hitting 25Live for
+            every visitor, with permission from the Office of the University Registrar. Room hours come from 25Live too.
           </p>
         </section>
 
