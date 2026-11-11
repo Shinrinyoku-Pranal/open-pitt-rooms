@@ -1,42 +1,101 @@
+<div align="center">
+
+<img src="public/logo.png" alt="" width="84" />
+
 # Open Pitt Rooms
 
-Find an open study room at Pitt — right now, or at any time this week. Shows every
-room on the registrar's official **Student Study Spaces** list (174 rooms, 21
-buildings), how long each stays free, what's scheduled next, and the room's real
-open hours.
+**Find an open study room at Pitt, right now.**
 
-- **3D campus map** as the whole background — glowing open-room counts per
-  building that follow your filters; click a building to filter to it.
-- **Time scrubber** — a chart of how many rooms are open across the day; drag it
-  (or use the arrow keys) and the map, numbers and list follow. Any of the next 7
-  days, with the busiest stretch marked.
-- **At a glance** — rooms open (vs. an hour earlier), free 2+ hours, opening within
-  30 minutes, share of rooms in class, and quick filters with live counts.
-- **Ask in plain English** — "whiteboard for 2 hours near Cathedral tomorrow at
-  3pm" becomes filters you can see and remove. Parsed locally by `src/lib/query.ts`
-  (no AI service, nothing leaves the browser); words it doesn't understand are
-  called out rather than silently dropped.
-- **Open now / at a time / this week** — pick any day in the next 7 and any time.
-- **Free until** — "Free until 3:30 PM · 2 hr 15 min · then CHEM 0110".
-- **Honest counts** — a room only counts as open if it's free for at least 20
-  minutes, so passing periods (10 min MWF, 15 min TuTh) don't inflate the number.
-- **Filters** — time slider, free for, seats, whiteboard, chalkboard, tables,
-  windows, accessible, A/C, lecture hall, room type (classroom / Nationality /
-  departmental), buildings with live counts, sort, saved rooms.
-- **Nearest-first** sorting (location stays on the device).
-- **Day timeline** for each room, a link to its 25Live page to confirm, walking
-  directions, and share links that restore every filter.
-- **This week** for each room — the next 7 days at a glance with each day's
-  longest free stretch; tap a day to jump the whole app there.
-- **Add to calendar** — saves a room's free stretch as an `.ics` event (a reminder,
-  clearly marked as not a reservation).
-- Installable as a phone app (PWA), light/dark switch, keyboard and screen-reader
-  friendly. Press `/` or `⌘K` to jump to the search box.
+A live 3D map of every official student study space at the University of Pittsburgh:<br />
+which rooms are free, how long they stay free, and what's scheduled next.
 
-The map uses [MapLibre GL](https://maplibre.org) with free vector tiles from
-[OpenFreeMap](https://openfreemap.org) (OpenStreetMap data; no API key or usage cap).
+**[Try it live at pittrooms.com](https://www.pittrooms.com)**
 
-## How it works
+[![CI](https://github.com/Shinrinyoku-Pranal/open-pitt-rooms/actions/workflows/ci.yml/badge.svg)](https://github.com/Shinrinyoku-Pranal/open-pitt-rooms/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![TypeScript: strict](https://img.shields.io/badge/TypeScript-strict-3178c6.svg)](tsconfig.json)
+
+</div>
+
+<a href="https://www.pittrooms.com"><img src="docs/screenshots/map-dark.jpg" alt="Open Pitt Rooms: a 3D map of Pitt's campus where every building shows how many study rooms are open, with a sidebar of filters and a timeline of the day" /></a>
+
+## Why it exists
+
+Pitt's registrar keeps an official list of student study spaces, and their schedules
+live in 25Live, the university's scheduling system. 25Live is built for booking
+events, not for a student with forty minutes between classes.
+
+Open Pitt Rooms turns that same public schedule into something you can read at a
+glance: 170+ rooms across 21 buildings, on a map, for right now or any time in the
+next week. It is free and open source, and the schedule data is cached with
+permission from the Office of the University Registrar.
+
+## What it does
+
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/ask.jpg" alt="Typing 'whiteboard for 2 hours near Cathedral' turns into three removable filters and a list of five matching rooms in the Cathedral of Learning" /></td>
+<td width="50%"><img src="docs/screenshots/room.jpg" alt="The Italian Nationality Room's card: free until 8:30 PM, with a timeline of every class and open stretch in its day" /></td>
+</tr>
+<tr>
+<td valign="top"><b>Ask in plain English.</b> "whiteboard for 2 hours near Cathedral" becomes filters you can see and remove.</td>
+<td valign="top"><b>See a room's whole day.</b> Free until when, what's scheduled next, and when it opens up again.</td>
+</tr>
+</table>
+
+- **Live 3D campus map.** Every building shows its count of open rooms, and the
+  counts follow your filters. Click a building to see its rooms.
+- **Ask in plain English.** "whiteboard for 2 hours near Cathedral tomorrow at 3pm"
+  becomes filters. A small rule-based parser runs on your device: no AI service,
+  nothing leaves the browser, and words it didn't understand are called out instead
+  of silently dropped.
+- **Time scrubber.** A chart of open rooms across the day. Drag it, or pick any of
+  the next 7 days, and the map, the numbers and the list all follow.
+- **Free until.** "Free until 3:30 PM · 2 hr 15 min · then CHEM 0110", plus each
+  room's day timeline and its week at a glance.
+- **Honest counts.** A room only counts as open if it stays free for at least 20
+  minutes, so the 10 and 15 minute gaps between classes don't inflate the number.
+- **Filters that match how students search.** Seats, whiteboard, chalkboard, tables,
+  windows, accessible, A/C, lecture hall, Nationality Rooms, saved rooms, nearest
+  first.
+- **Made for a phone.** Installs like an app, with light and dark themes, share links
+  that restore every filter, add-to-calendar, walking directions, and keyboard
+  shortcuts (`/` or `⌘K`).
+
+<p align="center">
+  <img src="docs/screenshots/map-light.jpg" alt="The same campus map in the light theme" width="60%" />
+  <img src="docs/screenshots/phone-map.jpg" alt="The map and overview on a phone" width="17%" />
+  <img src="docs/screenshots/phone-room.jpg" alt="A room's day timeline on a phone" width="17%" />
+</p>
+
+## Engineering highlights
+
+- **Any number of students for about the cost of one.** The page is static and
+  re-rendered at most once a minute, the API is cached at the CDN, and room status is
+  computed in the browser. Scrubbing through time or toggling a filter never touches
+  the server.
+- **A sync that refuses to make things worse.** [`sync.ts`](src/lib/sync.ts) parses
+  25Live's responses strictly, rejects a result that lost more than half the rooms,
+  writes everything in one transaction, and keeps the last good data if anything
+  fails. Two independent schedulers trigger it, and the job fails loudly rather than
+  report a sync that didn't happen.
+- **Plain-English search without an AI service.** [`query.ts`](src/lib/query.ts) is
+  a deterministic parser: each rule removes the words it understood, and whatever is
+  left becomes a text search or is reported back. Same input, same answer, every
+  time.
+- **Availability logic as pure functions.** [`roomState.ts`](src/lib/roomState.ts)
+  works out free stretches, closing hours and back-to-back classes with no framework
+  or database in sight, which makes it easy to test.
+- **The URL is the state.** Every filter, the chosen time and the selected room live
+  in the query string, so any view is a shareable link and the back button works.
+- **Privacy by default.** No accounts and no tracking cookies. Reservation titles are
+  reduced to a course code or "Reserved" on the server, so names never reach the
+  browser, and your location is only ever used on your device.
+- **Checked on every push.** Unit tests cover the 25Live parsing, availability,
+  search and time-zone logic. CI runs lint, a strict typecheck, the tests and a
+  production build.
+
+### How it works
 
 ```
 Vercel Cron hourly + GitHub backup     Vercel
@@ -53,19 +112,25 @@ Vercel Cron hourly + GitHub backup     Vercel
           ◄── CDN ◄── /api/rooms?date=…  (cached 60s, other days)
 ```
 
-- `src/lib/pitt25live.ts` — the 25Live client. Uses the registrar's "STUDENT
-  STUDY SPACES" saved search, so Pitt controls which rooms appear. Strict parsing:
-  an unexpected response shape throws instead of silently returning nothing.
-- `src/lib/sync.ts` — refreshes today + tomorrow every run and the full week every
-  6 hours (~2 and ~8 requests to 25Live respectively, spaced out). Refuses to apply
-  a response that lost more than half the rooms, and never runs two syncs at once.
-- `src/lib/roomState.ts` — pure availability logic (closed hours, back-to-back
-  classes, free-until), shared by server and browser and unit-tested.
-- The browser computes room status locally, so changing the time or filters is
-  instant and costs the server nothing. Everyone gets the same cached responses,
-  so thousands of users cost about the same as one.
+- `src/lib/pitt25live.ts` is the 25Live client. It reads the registrar's "STUDENT
+  STUDY SPACES" saved search, so Pitt controls which rooms appear.
+- `src/lib/sync.ts` refreshes today and tomorrow on every run and the full week
+  every 6 hours, with requests spaced out to keep the load on 25Live small.
+- `src/lib/roomState.ts`, `finder.ts` and `stats.ts` turn a day of schedule blocks
+  into room status, filtered lists and the numbers on the dashboard.
 
-## Local development
+### Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| App | Next.js 16 (App Router), React 19, TypeScript |
+| Styling | Tailwind CSS 4 |
+| Map | MapLibre GL with OpenFreeMap vector tiles (OpenStreetMap data, no API key) |
+| Data | PostgreSQL on Neon, with Prisma |
+| Tests | Vitest |
+| Hosting | Vercel, with Vercel Cron and GitHub Actions driving the sync |
+
+## Run it locally
 
 Requires Node 22+. On a Mac, keep the project outside iCloud-synced folders
 (Desktop, Documents): iCloud offloads `node_modules` files and Prisma hangs on them.
@@ -81,7 +146,13 @@ npm run dev
 
 Checks: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 
-## Deploying (≈20 minutes, free tiers)
+<details>
+<summary><b>Deploy your own</b> (about 20 minutes, free tiers)</summary>
+
+<br />
+
+Planning to sync from a university's 25Live? Ask that registrar first. This project
+has permission from Pitt's.
 
 1. **Database** — create a free Postgres at [neon.tech](https://neon.tech) (or add
    Neon from the Vercel Marketplace). Copy two connection strings:
@@ -113,7 +184,12 @@ Checks: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`.
 Note: GitHub pauses scheduled workflows in repos with no activity for 60 days —
 push a commit or re-enable it from the Actions tab before each semester.
 
-## Operations
+</details>
+
+<details>
+<summary><b>Operations</b> (what to check when something looks off)</summary>
+
+<br />
 
 | Symptom | Where to look |
 | --- | --- |
@@ -124,3 +200,41 @@ push a commit or re-enable it from the Actions tab before each semester.
 | Wrong hours for a room | Hours come from 25Live's "Closed" blocks; anything before 6 AM is treated as closed |
 
 Every sync is recorded in the `SyncRun` table with counts, warnings, and errors.
+
+</details>
+
+## Roadmap
+
+Ideas being explored. Issues and pull requests on any of them are welcome.
+
+- **Room reports.** One tap to say a room is taken or locked, so the map reflects
+  what's really happening as well as the schedule.
+- **More places to study.** Library group rooms, the student unions and computer
+  labs alongside classrooms.
+- **Alerts.** "Tell me when a room opens near me."
+- **Busy-hour predictions** from schedule history.
+- **Other campuses.** The Pitt-specific parts live in a handful of files: the
+  building list, the 25Live search ID and the nicknames the search box knows.
+
+## Contributing
+
+Contributions are welcome, from typo fixes to new features. Good places to start:
+
+- Teach the search box a new phrase or building nickname in
+  [`src/lib/query.ts`](src/lib/query.ts), with a test in `tests/query.test.ts`.
+- Fix a building's map position or add a new one in
+  [`src/lib/buildings.ts`](src/lib/buildings.ts).
+- Improve accessibility. Keyboard and screen-reader support is there; there is
+  always more to do.
+
+Run `npm run lint && npm run typecheck && npm test` before opening a pull request.
+Found a bug or a wrong room? [Open an issue](https://github.com/Shinrinyoku-Pranal/open-pitt-rooms/issues).
+
+## Credits
+
+Built by [Pranal Siripurapu](https://github.com/Shinrinyoku-Pranal). Maps by
+[MapLibre](https://maplibre.org) and [OpenFreeMap](https://openfreemap.org), with
+data from OpenStreetMap contributors. Released under the [MIT License](LICENSE).
+
+Open Pitt Rooms is an independent student project and is not affiliated with or
+endorsed by the University of Pittsburgh.
