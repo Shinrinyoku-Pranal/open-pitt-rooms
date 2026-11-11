@@ -36,7 +36,7 @@
   --surface-2: #e2e8f4;
   --fg: #0a1a3a;
   --muted: #4a5a7c;
-  --faint: #8796b3;
+  --faint: #586889;
   --line: rgb(0 53 148 / 0.1);
   --line-strong: rgb(0 53 148 / 0.18);
   --primary: #003594;
@@ -45,14 +45,14 @@
   --accent-fg: #0a1a3a;
   --accent-soft: rgb(255 184 28 / 0.18);
   --gold: #e5a000;
-  --free: #15803d;
+  --free: #166534;
   --free-ink: #ffffff;
   --free-soft: rgb(21 128 61 / 0.1);
-  --busy: #dc2626;
+  --busy: #b91c1c;
   --busy-soft: rgb(220 38 38 / 0.09);
   --closed: #8796b3;
   --closed-soft: rgb(135 150 179 / 0.16);
-  --warn: #a16207;
+  --warn: #854d0e;
   --warn-soft: rgb(202 138 4 / 0.13);
   --shadow: 0 1px 2px rgb(10 26 58 / 0.05), 0 10px 30px rgb(10 26 58 / 0.1);
   color-scheme: light;
@@ -68,7 +68,7 @@
     --surface-2: #212124;
     --fg: #f2f2f3;
     --muted: #a1a1aa;
-    --faint: #66666f;
+    --faint: #8a8a93;
     --line: rgb(255 255 255 / 0.08);
     --line-strong: rgb(255 255 255 / 0.14);
     --primary: #ffb81c;
@@ -99,7 +99,7 @@
   --surface-2: #212124;
   --fg: #f2f2f3;
   --muted: #a1a1aa;
-  --faint: #66666f;
+  --faint: #8a8a93;
   --line: rgb(255 255 255 / 0.08);
   --line-strong: rgb(255 255 255 / 0.14);
   --primary: #ffb81c;
@@ -334,7 +334,13 @@ option {
     0 0 0 4px var(--fg);
 }
 
-.opr-pin.is-dimmed {
+/* Dimmed pins with a count stay opaque: fading them left the number too faint to read. */
+.opr-pin.is-open.is-dimmed {
+  background: color-mix(in oklab, var(--free) 38%, var(--bg));
+  color: var(--fg);
+  box-shadow: none;
+}
+.opr-pin.is-empty.is-dimmed {
   opacity: 0.35;
 }
 
